@@ -17,29 +17,13 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Download prepared static bundle
+      - name: Download account-owned static bundle
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release download preview-20261027 --repo pcj-sudo/CoworkOS --pattern "site.zip" --dir bundle
+          gh release download release-20261101-migration --repo "${{ github.repository }}" --pattern "site.zip" --dir bundle
           mkdir _site
           unzip -q bundle/site.zip -d _site
-          gh release download preview-20261031-four-apps --repo pcj-sudo/CoworkOS --pattern "update.zip" --dir bundle
-          unzip -oq bundle/update.zip -d _site
-      - name: Update renamed Pages base URL
-        run: |
-          python3 - <<'PYTHON'
-          from pathlib import Path
-          for p in Path('_site').rglob('*'):
-              if p.is_file() and p.suffix in {'.html', '.css', '.js', '.mjs', '.json', '.svg', '.xml', '.txt'}:
-                  try:
-                      s = p.read_text()
-                  except UnicodeDecodeError:
-                      continue
-                  updated = s.replace('https://pcj-sudo.github.io/atria-cowork/', 'https://coworkos-ai.github.io/')
-                  if updated != s:
-                      p.write_text(updated)
-          PYTHON
       - name: Exclude local upload tooling
         run: rm -f _site/media-import.html
       - uses: actions/configure-pages@v5
