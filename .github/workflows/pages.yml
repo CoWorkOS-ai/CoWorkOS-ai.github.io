@@ -29,8 +29,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release download homepage-lite-v23-20261102 --repo "${{ github.repository }}" --pattern "homepage-lite-v23.zip" --dir update
-          unzip -qo update/homepage-lite-v23.zip -d _site
+          gh release download homepage-gallery-20261103 --repo "${{ github.repository }}" --pattern "homepage-gallery.zip" --dir update
+          unzip -qo update/homepage-gallery.zip -d _site
       - name: Exclude local upload tooling
         run: rm -f _site/media-import.html
       - uses: actions/configure-pages@v5
