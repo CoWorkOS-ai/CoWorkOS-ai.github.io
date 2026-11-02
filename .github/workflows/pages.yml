@@ -25,6 +25,12 @@ jobs:
           cat bundle/site.zip.part-* > bundle/site.zip
           mkdir _site
           unzip -q bundle/site.zip -d _site
+      - name: Apply reviewed main-aligned walkthrough
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download ui-alignment-20261102 --repo "${{ github.repository }}" --pattern "ui-alignment.zip" --dir update
+          unzip -qo update/ui-alignment.zip -d _site
       - name: Exclude local upload tooling
         run: rm -f _site/media-import.html
       - uses: actions/configure-pages@v5
